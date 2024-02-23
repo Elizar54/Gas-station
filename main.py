@@ -89,7 +89,6 @@ for mnt in range(1000, 1440):
                 next_client_demand = column_queue[k][0][1]
                 next_deoccup_time = client_time(next_client_demand, mnt)
                 time_deoccup[k] = next_deoccup_time
-                print(time_deoccup)
                 print(f'В {curr_time} клиент {column_queue[k][0]} начал заправку.')
                 print()
                 current_client[k] = column_queue[k].pop(0)
@@ -130,9 +129,9 @@ for mnt in range(1000, 1440):
         print()
 
 # Итоги
-print('Количество проданного бензина по маркам:', end='')
+print('Количество проданного бензина по маркам:')
 for mark in sold_gas:
     print(f'Бензина марки {mark} продано {sold_gas[mark]} литров')
 
-print('Общая выручка:', cash)
+print(f'Общая выручка: {cash} рублей')
 print('Количество потерянных клиентов:', len(missed_clients))
