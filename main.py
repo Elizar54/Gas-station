@@ -31,7 +31,7 @@ def client_time(demand, actual_time): # Время, в которое клиен
     if demand <= 10:
         return translate_time(actual_time + 1)
     else:
-        return translate_time(actual_time + math.ceil(demand / 5) + random.choice([1, 0]) * random.choice([-1, 1]))
+        return translate_time(actual_time + math.ceil(demand / 10) + random.choice([1, 0]) * random.choice([-1, 1]))
     
 
 clients = [] # Все клиенты
