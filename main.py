@@ -26,9 +26,10 @@ def translate_time(time): # Перевод количества минут в ч
 def client_time(demand, actual_time): # Время, в которое клиент освободит бензоколонку
     demand = int(demand)
     if demand <= 10:
-        return translate_time(actual_time + 1)
+        return translate_time(actual_time + 1), 1
     else:
-        return translate_time(actual_time + math.ceil(demand / 10) + random.choice([1, 0]) * random.choice([-1, 1]))
+        return translate_time(actual_time + math.ceil(demand / 10) + random.choice([1, 0]) * random.choice([-1, 1])), \
+            math.ceil(demand / 10) + random.choice([1, 0]) * random.choice([-1, 1])
 
 
 def find_short_queue(avl_lst, aut_lst):
@@ -83,7 +84,7 @@ with open('input_clients.txt', encoding='utf-8') as file:
 for client in clients:
     arr_time_lst.append(client[0]) # создаем список, содержащий время прибытия каждого клиента
 
-for mnt in range(1440): # главный цикл
+for mnt in range(750, 1440): # главный цикл
     time.sleep(0.5)
     curr_time = translate_time(mnt) # переводим минуты в часы
 
@@ -97,7 +98,7 @@ for mnt in range(1440): # главный цикл
 
             if automats[int(k) - 1][ru.queue] > 0: # смотрим, есть ли кто в очереди к этой колонке
                 next_client_demand = column_queue[k][0][1] # смотрим, сколько литров нужно следующему клиенту
-                next_deoccup_time = client_time(next_client_demand, mnt) # считаем время освобождения колонки этим клиентом
+                next_deoccup_time = client_time(next_client_demand, mnt)[0] # считаем время освобождения колонки этим клиентом
                 time_deoccup[k] = next_deoccup_time # заменяем значение в словаре на время нового клиента
                 print(f'{ru.at} {curr_time} {ru.client_low} {column_queue[k][0]} {ru.fueling_start}')
                 print()
@@ -109,7 +110,8 @@ for mnt in range(1440): # главный цикл
 
     if curr_time in set(arr_time_lst): # смотрим, прибывает ли новый клиент в это время
         client = clients[arr_time_lst.index(curr_time)] # смотрим, что за клиент
-        print(f'{ru.at} {curr_time} {ru.new_client} {client}', end=' ')
+        time_for_client = client_time(client[1], mnt) 
+        print(f'{ru.at} {curr_time} {ru.new_client} {client} {time_for_client[1]}', end=' ')
         gas_type = client[2] # смотрим, какой бензин ему нужен
         time.sleep(0.3)
 
@@ -118,16 +120,16 @@ for mnt in range(1440): # главный цикл
             automats[int(client_column) - 1][ru.queue] += 1 # увеличиеваем очередь
             cash += int(client[1]) * gas_price[client[2]] # кэш на базе
             sold_gas[client[2]] += int(client[1]) # увеличиваем количество проданного топлива
-            msg = f'{ru.queue_entry} {automats[int(client_column) - 1][ru.aut_num]}'
-            print(msg)
-
             time.sleep(0.2)
 
-            if automats[int(client_column) - 1][ru.queue] == 1: #если в очереди никого нет
+            if automats[int(client_column) - 1][ru.queue] == 1: # если в очереди никого нет
                 current_client[automats[int(client_column) - 1][ru.aut_num]] = client
-                time_deoccup[client_column] = client_time(client[1], mnt)
+                time_deoccup[client_column] = time_for_client[0]
             else: # если есть
                 column_queue[client_column].append(client)
+
+            msg = f'{ru.queue_entry} {automats[int(client_column) - 1][ru.aut_num]}'
+            print(msg)
 
         else:  # если колонка не нашлась
             missed_clients.append(client)
