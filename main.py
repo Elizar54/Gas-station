@@ -36,6 +36,7 @@ def client_time(demand, actual_time): # Время, в которое клиен
 
 def find_short_queue(avl_lst, aut_lst):
     min_queue = float('inf')
+    min_que_col = ''
 
     for column in avl_lst: # проверяем колонки, на которых доступна эта марка топлива
         if aut_lst[int(column) - 1]['Очередь'] < min_queue and aut_lst[int(column) - 1]['Очередь'] < int(aut_lst[int(column) - 1]['Максимальная очередь']): # если очередь меньше минимальной и при этом не максимальна
@@ -85,7 +86,7 @@ with open('input_clients.txt', encoding='utf-8') as file:
 for client in clients:
     arr_time_lst.append(client[0]) # создаем список, содержащий время прибытия каждого клиента
 
-for mnt in range(1440): # главный цикл
+for mnt in range(750, 1440): # главный цикл
     time.sleep(0.5)
     curr_time = translate_time(mnt) # переводим минуты в часы
 
@@ -116,7 +117,7 @@ for mnt in range(1440): # главный цикл
         time.sleep(0.3)
 
         client_column = find_short_queue(gas_avail[gas_type], automats)
-        if client_column != float('inf'): # если нашлось место в очереди
+        if client_column != '': # если нашлось место в очереди
             automats[int(client_column) - 1]['Очередь'] += 1 # увеличиеваем очередь
             cash +=  int(client[1]) * gas_price[client[2]] # кэш на базе
             sold_gas[client[2]] += int(client[1]) # увеличиваем количество проданного топлива
