@@ -85,7 +85,6 @@ for client in clients:
     arr_time_lst.append(client[0]) # создаем список, содержащий время прибытия каждого клиента
 
 for mnt in range(1440): # главный цикл
-    #time.sleep(0.5)
     curr_time = translate_time(mnt) # переводим минуты в часы
 
     for k, v in time_deoccup.items(): # идем по словарю освобождения колонок
@@ -94,7 +93,7 @@ for mnt in range(1440): # главный цикл
             print(f'{ru.client_up} {current_client[automats[int(k) - 1][ru.aut_num]]} {ru.left_at} {curr_time}')
             print()
             
-            #time.sleep(0.3)
+            time.sleep(0.3)
 
             if automats[int(k) - 1][ru.queue] > 0: # смотрим, есть ли кто в очереди к этой колонке
                 next_client_demand = column_queue[k][0][1] # смотрим, сколько литров нужно следующему клиенту
@@ -106,21 +105,20 @@ for mnt in range(1440): # главный цикл
             else: # если в очереди никого нет
                 time_deoccup[k] = 0
             
-            time.sleep(0.3)
 
     if curr_time in set(arr_time_lst): # смотрим, прибывает ли новый клиент в это время
         client = clients[arr_time_lst.index(curr_time)] # смотрим, что за клиент
         time_for_client = client_time(client[1], mnt) 
         print(f'{ru.at} {curr_time} {ru.new_client} {client} {time_for_client[1]}', end=' ')
         gas_type = client[2] # смотрим, какой бензин ему нужен
-        #time.sleep(0.3)
+        
 
         client_column = find_short_queue(gas_avail[gas_type], automats)
         if client_column != '': # если нашлось место в очереди
             automats[int(client_column) - 1][ru.queue] += 1 # увеличиеваем очередь
             cash += int(client[1]) * gas_price[client[2]] # кэш на базе
             sold_gas[client[2]] += int(client[1]) # увеличиваем количество проданного топлива
-            #time.sleep(0.2)
+            time.sleep(0.2)
 
             if automats[int(client_column) - 1][ru.queue] == 1: # если в очереди никого нет
                 current_client[automats[int(client_column) - 1][ru.aut_num]] = client
@@ -135,12 +133,12 @@ for mnt in range(1440): # главный цикл
             missed_clients.append(client)
             print(ru.client_left)
 
-        #time.sleep(0.5)
+        time.sleep(0.5)
 
         for elem in automats:
             msg = f'{ru.aut_num_msg}{elem[ru.aut_num]} {ru.queue_max_msg} {elem[ru.queue_max]} {ru.gas_types}: {elem[ru.gas_types]} ->{elem[ru.queue] * "*"}'
             print(msg)
-            #time.sleep(0.5)
+            
         print()
 
 # Итоги
