@@ -4,7 +4,7 @@ import math
 import time
 import ru_local as ru
 
-def translate_time(time): # Перевод количества минут в часы
+def translate_time(time):
     time_str = ''
 
     if time // 60 < 10:
@@ -13,7 +13,7 @@ def translate_time(time): # Перевод количества минут в ч
     else:
         time_str += str(time // 60) + ':'
     
-    time = time % 60
+    time %= 60
 
     if time < 10:
         time_str += '0' + str(time)
@@ -23,7 +23,7 @@ def translate_time(time): # Перевод количества минут в ч
     return time_str
 
 
-def client_time(demand, actual_time): # Время, в которое клиент освободит бензоколонку
+def client_time(demand, actual_time): 
     demand = int(demand)
     if demand <= 10:
         return translate_time(actual_time + 1), 1
@@ -36,7 +36,7 @@ def find_short_queue(avl_lst, aut_lst):
     min_queue = float('inf')
     min_que_col = ''
 
-    for column in avl_lst: # проверяем колонки, на которых доступна эта марка топлива
+    for column in avl_lst: 
         if aut_lst[int(column) - 1][ru.queue] < min_queue and aut_lst[int(column) - 1][ru.queue] < int(aut_lst[int(column) - 1][ru.queue_max]): # если очередь меньше минимальной и при этом не максимальна
             min_queue = aut_lst[int(column) - 1][ru.queue]
             min_que_col = column
@@ -91,6 +91,7 @@ for mnt in range(1440): # главный цикл
         if curr_time == v: # если данная минута совпадает с одним из значений словаря освобождения колонки, то запускается следующий код
             automats[int(k) - 1][ru.queue] -= 1 # уменьшаем очередь на единицу
             client_left_out = ''
+            
             for x in current_client[automats[int(k) - 1][ru.aut_num]]:
                 client_left_out += x + ' '
             print(f'{ru.client_up} {client_left_out}{ru.left_at} {curr_time}')
@@ -104,23 +105,26 @@ for mnt in range(1440): # главный цикл
                 time_deoccup[k] = next_deoccup_time # заменяем значение в словаре на время нового клиента
 
                 fueling_start_out = ''
+
                 for x in column_queue[k][0][1:]:
                     fueling_start_out += x + ' '
+
                 print(f'{ru.at} {curr_time} {ru.client_low} {fueling_start_out}{ru.fueling_start}')
                 print()
                 
-                current_client[k] = column_queue[k].pop(0) # уменьшаем очередь и записываем нового клиента в качестве обслуживаемого
-            else: # если в очереди никого нет
+                current_client[k] = column_queue[k].pop(0) 
+            else: 
                 time_deoccup[k] = 0
             
 
     if curr_time in set(arr_time_lst): # смотрим, прибывает ли новый клиент в это время
         client = clients[arr_time_lst.index(curr_time)] # смотрим, что за клиент
         time_for_client = client_time(client[1], mnt) 
-
         client_new_out = ''
+
         for x in client:
             client_new_out += x + ' '
+
         print(f'{ru.at} {curr_time} {ru.new_client} {client_new_out}{time_for_client[1]}', end=' ')
 
         gas_type = client[2] # смотрим, какой бензин ему нужен
@@ -133,10 +137,10 @@ for mnt in range(1440): # главный цикл
             sold_gas[client[2]] += int(client[1]) # увеличиваем количество проданного топлива
             #time.sleep(0.2)
 
-            if automats[int(client_column) - 1][ru.queue] == 1: # если в очереди никого нет
+            if automats[int(client_column) - 1][ru.queue] == 1: 
                 current_client[automats[int(client_column) - 1][ru.aut_num]] = client
                 time_deoccup[client_column] = time_for_client[0]
-            else: # если есть
+            else: 
                 column_queue[client_column].append(client)
 
             msg_out = ''
@@ -162,6 +166,7 @@ for mnt in range(1440): # главный цикл
 
 # Итоги
 print(ru.sold_gas_vol)
+
 for mark in sold_gas:
     print(f'{ru.gas_type} {mark} {ru.sold} {sold_gas[mark]} {ru.litres}')
 
