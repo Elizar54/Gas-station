@@ -1,3 +1,8 @@
+'''
+Андреев Игорь - 30
+Елизарьев Ярослав - 
+'''
+
 
 import random
 import math
@@ -37,7 +42,7 @@ def find_short_queue(avl_lst, aut_lst):
     min_que_col = ''
 
     for column in avl_lst: 
-        if aut_lst[int(column) - 1][ru.queue] < min_queue and aut_lst[int(column) - 1][ru.queue] < int(aut_lst[int(column) - 1][ru.queue_max]): # если очередь меньше минимальной и при этом не максимальна
+        if aut_lst[int(column) - 1][ru.queue] < min_queue and aut_lst[int(column) - 1][ru.queue] < int(aut_lst[int(column) - 1][ru.queue_max]):
             min_queue = aut_lst[int(column) - 1][ru.queue]
             min_que_col = column
 
@@ -97,13 +102,11 @@ for mnt in range(1440):
 
             print(f'{ru.client_up} {client_left_out}{ru.left_at} {curr_time}')
             print()
-            
-            #time.sleep(0.3)
 
             if automats[int(k) - 1][ru.queue] > 0: 
                 next_client_demand = column_queue[k][0][1] 
                 next_deoccup_time = client_time(next_client_demand, mnt)[0] 
-                time_deoccup[k] = next_deoccup_time # заменяем значение в словаре на время нового клиента
+                time_deoccup[k] = next_deoccup_time
 
                 fueling_start_out = ''
 
@@ -136,7 +139,6 @@ for mnt in range(1440):
             automats[int(client_column) - 1][ru.queue] += 1 
             cash += int(client[1]) * gas_price[client[2]] 
             sold_gas[client[2]] += int(client[1]) 
-            #time.sleep(0.2)
 
             if automats[int(client_column) - 1][ru.queue] == 1: 
                 current_client[automats[int(client_column) - 1][ru.aut_num]] = client
@@ -154,8 +156,6 @@ for mnt in range(1440):
             missed_clients.append(client)
             print(ru.client_left)
 
-        #time.sleep(0.5)
-
         for elem in automats:
             msg_gas_types_out = ''
             for x in elem[ru.gas_types]:
@@ -165,7 +165,6 @@ for mnt in range(1440):
             
         print()
 
-# Итоги
 print(ru.sold_gas_vol)
 
 for mark in sold_gas:
@@ -173,3 +172,9 @@ for mark in sold_gas:
 
 print(f'{ru.total_revenue} {cash} {ru.rubles}')
 print(ru.missed_clients_qnt, len(missed_clients))
+
+lost_revenue = 0
+for client in missed_clients:
+    lost_revenue += client[1] * gas_price[client[2]]
+
+print(ru.lost_revenue, lost_revenue)
