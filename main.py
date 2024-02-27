@@ -106,7 +106,7 @@ for mnt in range(1440): # главный цикл
                 fueling_start_out = ''
                 for x in column_queue[k][0]:
                     fueling_start_out += x + ' '
-                print(f'{ru.at} {curr_time} {ru.client_low} {fueling_start_out}')
+                print(f'{ru.at} {curr_time} {ru.client_low} {column_queue[k][0]} {fueling_start_out}')
                 print()
                 
                 current_client[k] = column_queue[k].pop(0) # уменьшаем очередь и записываем нового клиента в качестве обслуживаемого
@@ -167,9 +167,3 @@ for mark in sold_gas:
 
 print(f'{ru.total_revenue} {cash} {ru.rubles}')
 print(ru.missed_clients_qnt, len(missed_clients))
-
-lost_rvn = 0
-for lost_client in missed_clients:
-    lost_rvn += int(lost_client[1]) * gas_price[lost_client[2]]
-
-print(ru.lost_rvn, lost_rvn)
