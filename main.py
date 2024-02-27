@@ -71,7 +71,7 @@ with open('input_automats.txt', encoding='utf-8') as file:
         current_client[seq[0]] = None
 
         for elem in automat[ru.gas_types]: # формируем словарь, в котором будет информация о том, у какого автомата доступна каждая марка бензина
-            if gas_avail.get(elem):
+            if elem in gas_avail:
                 gas_avail[elem].append(seq[0])
             else:
                 gas_avail[elem] = [seq[0]]
@@ -109,11 +109,13 @@ for mnt in range(1440): # главный цикл
     if curr_time in set(arr_time_lst): # смотрим, прибывает ли новый клиент в это время
         client = clients[arr_time_lst.index(curr_time)] # смотрим, что за клиент
         time_for_client = client_time(client[1], mnt) 
+
         print(f'{ru.at} {curr_time} {ru.new_client} {client} {time_for_client[1]}', end=' ')
+
         gas_type = client[2] # смотрим, какой бензин ему нужен
         
-
         client_column = find_short_queue(gas_avail[gas_type], automats)
+
         if client_column != '': # если нашлось место в очереди
             automats[int(client_column) - 1][ru.queue] += 1 # увеличиеваем очередь
             cash += int(client[1]) * gas_price[client[2]] # кэш на базе
