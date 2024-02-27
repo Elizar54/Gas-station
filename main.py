@@ -167,3 +167,10 @@ for mark in sold_gas:
 
 print(f'{ru.total_revenue} {cash} {ru.rubles}')
 print(ru.missed_clients_qnt, len(missed_clients))
+
+lost_rvn = 0
+for lost_client in missed_clients:
+    lost_rvn += int(lost_client[1]) * gas_price[lost_client[2]]
+
+print(ru.lost_rvn, lost_rvn)
+
