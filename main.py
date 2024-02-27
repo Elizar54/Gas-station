@@ -93,7 +93,7 @@ for mnt in range(1440): # главный цикл
             client_left_out = ''
             for x in current_client[automats[int(k) - 1][ru.aut_num]]:
                 client_left_out += x + ' '
-            print(f'{ru.client_up} {client_left_out} {ru.left_at} {curr_time}')
+            print(f'{ru.client_up} {client_left_out}{ru.left_at} {curr_time}')
             print()
             
             #time.sleep(0.3)
@@ -104,9 +104,9 @@ for mnt in range(1440): # главный цикл
                 time_deoccup[k] = next_deoccup_time # заменяем значение в словаре на время нового клиента
 
                 fueling_start_out = ''
-                for x in column_queue[k][0]:
+                for x in column_queue[k][0][1:]:
                     fueling_start_out += x + ' '
-                print(f'{ru.at} {curr_time} {ru.client_low} {column_queue[k][0]} {fueling_start_out}')
+                print(f'{ru.at} {curr_time} {ru.client_low} {fueling_start_out}{ru.fueling_start}')
                 print()
                 
                 current_client[k] = column_queue[k].pop(0) # уменьшаем очередь и записываем нового клиента в качестве обслуживаемого
@@ -151,8 +151,8 @@ for mnt in range(1440): # главный цикл
 
         #time.sleep(0.5)
 
-        msg_gas_types_out = ''
         for elem in automats:
+            msg_gas_types_out = ''
             for x in elem[ru.gas_types]:
                 msg_gas_types_out += x + ' '
             msg = f'{ru.aut_num_msg}{elem[ru.aut_num]} {ru.queue_max_msg} {elem[ru.queue_max]} {ru.gas_types}: {msg_gas_types_out}->{elem[ru.queue] * "*"}'
