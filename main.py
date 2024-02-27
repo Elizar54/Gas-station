@@ -99,8 +99,10 @@ for mnt in range(1440): # главный цикл
                 next_client_demand = column_queue[k][0][1] # смотрим, сколько литров нужно следующему клиенту
                 next_deoccup_time = client_time(next_client_demand, mnt)[0] # считаем время освобождения колонки этим клиентом
                 time_deoccup[k] = next_deoccup_time # заменяем значение в словаре на время нового клиента
+
                 print(f'{ru.at} {curr_time} {ru.client_low} {column_queue[k][0]} {ru.fueling_start}')
                 print()
+                
                 current_client[k] = column_queue[k].pop(0) # уменьшаем очередь и записываем нового клиента в качестве обслуживаемого
             else: # если в очереди никого нет
                 time_deoccup[k] = 0
