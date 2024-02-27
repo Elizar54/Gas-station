@@ -106,7 +106,7 @@ for mnt in range(1440): # главный цикл
                 fueling_start_out = ''
                 for x in column_queue[k][0]:
                     fueling_start_out += x + ' '
-                print(f'{ru.at} {curr_time} {ru.client_low} {column_queue[k][0]} {fueling_start_out}')
+                print(f'{ru.at} {curr_time} {ru.client_low} {fueling_start_out}')
                 print()
                 
                 current_client[k] = column_queue[k].pop(0) # уменьшаем очередь и записываем нового клиента в качестве обслуживаемого
