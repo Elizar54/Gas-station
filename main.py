@@ -62,7 +62,7 @@ with open('input_automats.txt', encoding='utf-8') as file:
         seq = x.split()
         automat[ru.aut_num] = seq[0] # заполняем словарь по каждому автомату и формируем список из таких словарей
         automat[ru.queue_max] = seq[1]
-        automat[ru.gas_types] = [x for x in seq[2:]]
+        automat[ru.gas_types] = seq[2:]
         automat[ru.queue] = 0
         automats.append(automat)
 
@@ -121,7 +121,7 @@ for mnt in range(1440): # главный цикл
         client_new_out = ''
         for x in client:
             client_new_out += x + ' '
-        print(f'{ru.at} {curr_time} {ru.new_client} {client_new_out} {time_for_client[1]}', end=' ')
+        print(f'{ru.at} {curr_time} {ru.new_client} {client_new_out}{time_for_client[1]}', end=' ')
 
         gas_type = client[2] # смотрим, какой бензин ему нужен
         
@@ -142,7 +142,7 @@ for mnt in range(1440): # главный цикл
             msg_out = ''
             for x in automats[int(client_column) - 1][ru.aut_num]:
                 msg_out += x + ' '
-            msg = f'{ru.queue_entry} {msg_out}'
+            msg = f'{ru.queue_entry}{msg_out}'
             print(msg)
 
         else:  # если колонка не нашлась
